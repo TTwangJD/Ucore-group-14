@@ -422,7 +422,7 @@ page_remove_pte(pde_t *pgdir, uintptr_t la, pte_t *ptep) {
         if(page_ref_dec(page) == 0){
             free_page(page);
         }
-        *ptep = 0;
+        *ptep = 0;//for safety?
         tlb_invalidate(pgdir,la);
     }
 }
@@ -469,7 +469,7 @@ page_insert(pde_t *pgdir, struct Page *page, uintptr_t la, uint32_t perm) {
 // edited are the ones currently in use by the processor.
 void
 tlb_invalidate(pde_t *pgdir, uintptr_t la) {
-    if (rcr3() == PADDR(pgdir)) {
+    if (rcr3() == PADDR(pgdir)) {//misunderstand
         invlpg((void *)la);
     }
 }
